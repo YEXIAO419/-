@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0" name="viewport" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	<meta content="telephone=no" name="format-detection" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>仿支付宝收银台</title>
+    <style type="text/css">
+        /*...........style for base................*/
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,input,textarea,p,th,td,header, section, footer, aside, article, figure,table, thead, colgroup, tbody, tfoot{margin:0;padding:0;}
+        header, section, footer, aside, article, figure { display: block; }
+        body { font: 12px/1.4 "微软雅黑", Verdana, Helvetica, Sans-Serif; color: #333; background-color: #f6f6f6; color:#333; }
+        ol,ul,dl { list-style: none; }
+        h1,h2,h3,h4,h5,h6 { font-size: 100%; }
+        :focus{ outline: 0; }
+        a:link, a:visited { color: #42413C; text-decoration: none; }
+        a{ cursor: pointer; }
+        a:hover { text-decoration:none; color: #e60012; cursor: pointer; }
+        a img { border: 0; }
+        img { vertical-align: middle; }
+        table { width:100%; border-collapse:collapse; }
+        td{ word-wrap:break-word; }
+        em{ font-style: normal; }
+        .fl { float: left; }
+        .fr { float: right; }
+        .fn { float: none; }
+        .tal { text-align: left; }
+        .tac { text-align: center; }
+        .tar { text-align: right; }
+        .clr { clear: both; }
+        .clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+        .clearfix { *zoom:1; }
+        .overflow { overflow: hidden; }
+        .hidden { display: none; }
+		.bgc { background-color: #fff; }
+
+        /*...........style for content................*/
+		@media screen and (max-width: 600px) {
+			.left li img { padding: 0 3% 0 3%; }
+		}	
+		@media screen and (min-width: 600px) {
+			.left li img { padding: 0 5% 0 18%; }
+		}
+        .header { height: 80px; line-height: 60px; margin-bottom: 20px; }
+		.header .header-con { max-width: 970px; margin: 0 auto; }
+        .header span{ font-weight: normal; padding-right: 15px; }
+        .header b { font-size: 1rem; font-weight: normal; height: 60px; display: inline-block; border-left: 1px solid #bbb; margin: 10px 0; padding-left: 20px; }
+		.main { display: flex; flex-direction: row; height: calc(100vh - 100px); max-width: 850px; margin: 0 auto; }
+		.left { width: 30%; border-right: solid 30px #f6f6f6; min-width: 110px; }
+		.left h2 { height: 108px; line-height: 108px; font-size: 1rem; text-align: center; font-weight: normal; color: #999; }
+		.left li { height: 108px; line-height: 108px; font-size: 1.4rem; color: #fff; cursor: pointer; }
+		.left .zhifubao { background-color: #2384e3; }
+		.left .weixin { background-color: #2ac233; }
+		.left .yiwangtong { background-color: #fd555e; }
+		.right { width: 100%; }
+		.right-top { font-size: .6rem; border-bottom: solid 25px #f6f6f6; padding: 15px 0; }
+		.right-top li { line-height: 25px; }		
+		.right-top li span { width: 110px; display: inline-block; text-align: right; }
+		.right-bottom .alipay { display: flex; flex-direction: row; justify-content: center; margin-top: 20px; padding: 50px 0; }
+		.alipay .code-wrap { padding: 0 10px 0 120px; }
+		.alipay .code-money b { display: block; padding: 3px 0 20px 4px; font-size: 1.6rem; color: #f9522a; }
+		.code-wrap .QRcode { width: 165px; height: 205px; border: solid #c9c9c9 1px; box-shadow: 1px 1px 2px #bbb; text-align: center; padding-top: 10px; }
+		.code-wrap .QRcode .QRcode-desc { padding-top: 13px; display: flex; flex-direction: row; justify-content: center; }
+		.code-wrap .QRcode .QRcode-desc-text { text-align: left; position: relative; top: -2px; left: 6px; }
+		.code-wrap .tips { text-align: center; margin-top: 15px; }
+		.code-wrap .tips a { text-decoration: underline; color: #b0b0b0; } 
+		.right-bottom .other-pay { text-align: center;  font-size: 2rem; color: #999; padding-top: 100px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+		<!------header------->
+        <header class="header bgc">
+			<div class="header-con">
+				<span>
+					<img src="./img/logo.gif" width="220px" />
+				</span>
+				<b>收银台</b>
+			</div>
+		</header>
+
+		<!------main------->
+        <section class="main bgc">
+            <div class="left">
+				<h2>支付方式</h2>
+				<ul>
+					<li class="zhifubao" onclick="showContent('zhifubao')"><img src="./img/zhifubao.png" width="28%" />支付宝</li>
+					<li class="weixin" onclick="showContent('weixin')"><img src="./img/weixin.png" width="28%" />微信</li>
+					<li class="yiwangtong" onclick="showContent('yiwangtong')"><img src="./img/yiwangtong.png" width="28%" />一网通</li>
+				</ul>
+			</div>
+			<div class="right">
+				<div class="right-top">
+					<ul>
+						<li><span>姓名：</span>XXX</li>
+						<li><span>收款方：</span>XXX</li>
+						<li><span>订单号：</span>XXX</li>
+						<li><span>收费项目：</span>XXX</li>
+						<li><span>费用名称：</span>XXX</li>
+						<li><span>业务交易号：</span>XXX</li>
+						<li><span>商品描述：</span>XXX</li>
+						<li><span>交易金额：</span>555555.00</li>
+					</ul>
+				</div>
+				<div class="right-bottom bgc">
+					<div id="alipay" class="alipay">
+						<div class="code-wrap">
+							<div class="code-money">
+								扫一扫付款（元）
+								<b>555555.00</b>
+							</div>
+							<div class="QRcode">
+								<img src="./img/code.png" />
+								<div class="QRcode-desc">	
+									<div class="QRcode-desc-img">
+										<img src="./img/saosao1.png" width="28px" />
+									</div>
+									<div class="QRcode-desc-text">	
+										<p>打开手机支付宝</p>
+										<p>扫扫继续付款</p>
+									</div>
+								</div>
+							</div>
+							<div class="tips"><a href="https://mobile.alipay.com/index.htm">首次使用请下载手机支付宝</a></div>
+						</div>
+						<div>
+							<img src="./img/saosao.png" />
+						</div>
+					</div>
+					<div id="other-pay" class="other-pay">暂未开通服务，敬请期待！</div>
+				</div>
+			</div>
+        </section>
+    </div>
+
+    <script type="text/javascript">
+       /**
+		* js的封装ajax请求
+		* @param url 请求接口地址
+		* @param data 请求的参数
+		* @param method 请求方式get post
+		* @param success 回调函数
+		*/
+		function ajax_method(url,method,success,data) {
+			var ajax = new XMLHttpRequest();
+
+			// get请求
+			if (method =='get') {
+				if (data) {
+					url+='?';
+					url+=data;
+				}
+				ajax.open(method,url);
+				ajax.send();
+			}else{
+				// post请求
+				ajax.open(method,url);
+				ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				if (data) {
+					ajax.send(data);
+				}else{
+					ajax.send();
+				}
+			}
+
+			// 注册事件
+			ajax.onreadystatechange = function () {
+				if (ajax.readyState==4&&ajax.status==200) {
+					success(ajax.responseText);
+				}
+			}
+        }
+		
+		/**
+		* 根据支付方式显示信息
+		* @param type取值为 (zhifubao || weixin || yikatong)
+		*/
+
+		function showContent(type) {
+			if(type == 'zhifubao') {
+				document.getElementById('alipay').style.display = 'flex';
+				document.getElementById('other-pay').style.display = 'none';
+			}else {
+				document.getElementById('alipay').style.display = 'none';
+				document.getElementById('other-pay').style.display = 'block';
+			}
+		}
+        </script>
+</body>
+</html>
